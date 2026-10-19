@@ -1,0 +1,22 @@
+const express = require('express')
+const { adminLogin, getVenues, createAdmin, createOwner, deleteVenue, updateVenue, getVenueById, getAllOwners, deleteOwner, addVenue, getVenueBookings, allBookings, deleteBooking, approveVenue } = require('../controllers/adminController')
+const { authentication } = require('../middlewares/authentication')
+const upload = require('../middlewares/uploadMiddleware')
+const adminRouter = express.Router()
+
+adminRouter.post('/create', authentication, createAdmin)
+adminRouter.post('/addOwner', authentication, createOwner)
+adminRouter.delete('/deleteOwner/:id', authentication, deleteOwner)
+adminRouter.post('/login', adminLogin)
+adminRouter.get('/venues', authentication, getVenues)
+adminRouter.post('/addVenue', authentication, upload.array('images', 5), addVenue)
+adminRouter.delete('/venues/:id', authentication, deleteVenue)
+adminRouter.put('/venues/:id', authentication, upload.array('images', 5), updateVenue)
+adminRouter.get('/venues/:id', authentication, getVenueById)
+adminRouter.put('/venues/:id/status', authentication, approveVenue)
+adminRouter.get('/allOwners', authentication, getAllOwners)
+adminRouter.get('/venues/:id/bookings', authentication, getVenueBookings)
+adminRouter.get('/bookings', authentication, allBookings)
+adminRouter.delete('/bookings/:id', authentication, deleteBooking)
+
+module.exports = adminRouter
